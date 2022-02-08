@@ -23,18 +23,19 @@ void * random_bot(void * arg) {
 	arguments * p = (arguments *)arg;
 	float para_int = p->a + p->b;
 	float out;
-	FILE * pipe = fdopen(fd[1], "a+");
+	//FILE * pipe = fdopen(fd[1], "a+");
+	srand(time(NULL));
 	while (1) {
 		sleep(1);
 		out = para_int + rand(); 
-		fprintf(pipe, "%f", out);
+		write(fd[1], out, sizeof(int));
 	}
 }
 
 void * adder(void * arg) {
 	float buf;
 	while (1) {
-		fscanf(fd[0], "%f", &buf);
+		read(fd[0], &buf, sizeof(int));
 		total = total+buf;
 	}
 }
